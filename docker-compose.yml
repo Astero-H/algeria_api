@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:11.1
+    hostname: localhost
+    container_name: maria_container
+    ports:
+      - 3306:3306
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=hamid
+      - MARIADB_PASSWORD=akhenaton
+      - MARIADB_DATABASE=algeria_api
+    volumes:
+      - mysql-data:/bitnami/mariadb/data
+      - ./data-mysql:/bitnami/mariadb/data
+    
+
+  myapp:
+    image: docker.io/bitnami/symfony:6.3
+    container_name: symfony_container
+    ports:
+      - '8000:8000'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - SYMFONY_DATABASE_HOST=localhost
+      - SYMFONY_DATABASE_USER=hamid
+      - SYMFONY_PROJECT_SKELETON=symfony/skeleton
+    depends_on:
+      - mariadb 
+    volumes:
+      - './algeria-api:/app'
+
+volumes:
+  mysql-data:
