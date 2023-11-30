@@ -54,7 +54,7 @@ class CitiesController extends AbstractController
     }
 
     #[Route('/api/cities/{id}', name: 'updateCity', methods: ['PUT'])]
-    public function updateCity(Cities $currentCity,Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator): JsonResponse
+    public function updateCity(Cities $currentCity,Request $request, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
     {     
         $updateCity = $serializer->deserialize($request->getContent(), Cities::class,'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $currentCity]);        
         $em->persist($updateCity);
